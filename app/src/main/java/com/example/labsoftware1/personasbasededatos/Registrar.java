@@ -1,5 +1,6 @@
 package com.example.labsoftware1.personasbasededatos;
 
+import android.content.DialogInterface;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 public class Registrar extends AppCompatActivity {
     private EditText cajaCedula;
@@ -80,7 +82,7 @@ public class Registrar extends AppCompatActivity {
                 pasatiempo = pasatiempo+getResources().getString(R.string.bailar)+", ";
             }
 
-            pasatiempo = pasatiempo.substring(pasatiempo.length()-1);
+            pasatiempo = pasatiempo.substring(0,pasatiempo.length()-2);
             p = new Persona(foto,cedula,nombre,apellido,sexo,pasatiempo);
             p.guardar(getApplicationContext());
 
@@ -120,6 +122,64 @@ public class Registrar extends AppCompatActivity {
         cajaCedula.requestFocus();
 
     }
+
+    public void limpiar(View v){
+        limpiar();
+    }
+
+    public void buscar(View v){
+        Persona p;
+        String pasatiempos;
+        if(validarCedula()) {
+            p = Datos.buscarPersona(getApplicationContext(), cajaCedula.getText().toString());
+            if(p!=null){
+                cajaNombre.setText(p.getNombre());
+                cajaApellido.setText(p.getApellido());
+                if(p.getSexo().equalsIgnoreCase(getResources().getString(R.string.Masculino)))rdMasculino.setChecked(true);
+                else rdFemenino.setChecked(true);
+
+                pasatiempos = p.getPasatiempo();
+                if(pasatiempos.contains(getResources().getString(R.string.programar))) chkProgramar.setChecked(true);
+                if(pasatiempos.contains(getResources().getString(R.string.leer))) chkLeer.setChecked(true);
+                if(pasatiempos.contains(getResources().getString(R.string.bailar))) chkBailar.setChecked(true);
+            }
+        }
+        }
+
+    public void eliminar(View v){
+        Persona p;
+        if(validarCedula()) {
+            p = Datos.buscarPersona(getApplicationContext(), cajaCedula.getText().toString());
+            if(p!=null){
+               AlertDialog.Builder ventana = new AlertDialog.Builder(this);
+                ventana.setTitle("Confirmación");
+                ventana.setMessage("¿Está seguro que desea eliminar esta persona?");
+                ventana.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       Persona p;
+                        p = Datos.buscarPersona(getApplicationContext(), cajaCedula.getText().toString());
+
+                        p.eliminar(getApplicationContext());
+                        limpiar();
+                        Toast.makeText(getApplicationContext(), "Persona Eliminada Exitosamente",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                ventana.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cajaCedula.requestFocus();
+                    }
+                });
+
+                   ventana.show();
+            }
+        }
+    }
+
 
 
 

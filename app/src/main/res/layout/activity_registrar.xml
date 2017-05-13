@@ -40,14 +40,15 @@
                 android:id="@+id/txtcedula"
                 android:layout_weight="1"
                 android:hint="@string/cedula"
-                android:inputType="number" />
+                android:inputType="textPersonName" />
 
             <Button
                 android:text="@string/buscar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="buscar" />
 
         </LinearLayout>
 
@@ -155,7 +156,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/button5"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="eliminar" />
 
             <Button
                 android:text="@string/limpiar"
