@@ -1,5 +1,9 @@
 package com.example.labsoftware1.personasbasededatos;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 /**
  * Created by Lab Software 1 on 12/05/2017.
  */
@@ -67,5 +71,42 @@ public class Persona {
 
     public void setPasatiempo(String pasatiempo) {
         this.pasatiempo = pasatiempo;
+    }
+
+    public void guardar(Context contexto){
+        //declarar las variables
+        SQLiteDatabase db;
+        String sql;
+
+        //Abrir la conexion de base datos en modo escritura
+        PersonasSQLiteOpenHelper  aux = new PersonasSQLiteOpenHelper(contexto,"DBPersonas",null,1);
+        db = aux.getWritableDatabase();
+
+        //insertar forma 1
+        sql = "INSERT INTO Personas values('"
+                +this.getFoto()+"','"
+                +this.getCedula()+"','"
+                +this.getNombre()+"','"
+                +this.getApellido()+"','"
+                +this.getSexo()+"','"
+                +this.getPasatiempo()+"')";
+
+        db.execSQL(sql);
+
+        //insert forma 2
+
+      /*  ContentValues nuevoRegistro = new ContentValues();
+        nuevoRegistro.put("foto",this.getFoto());
+        nuevoRegistro.put("cedula",this.getCedula());
+        nuevoRegistro.put("nombre",this.getNombre());
+        nuevoRegistro.put("apellido",this.getApellido());
+        nuevoRegistro.put("sexo",this.getSexo());
+        nuevoRegistro.put("pasatiempo",this.getPasatiempo());
+
+        db.insert("Personas",null,nuevoRegistro);
+*/
+        //cerrar conexion
+        db.close();
+
     }
 }
