@@ -124,4 +124,26 @@ public class Persona {
         db.close();
 
     }
+
+    public void modificar(Context contexto){
+        //declarar las variables
+        SQLiteDatabase db;
+        String sql;
+
+        //Abrir la conexion de base datos en modo escritura
+        PersonasSQLiteOpenHelper  aux = new PersonasSQLiteOpenHelper(contexto,"DBPersonas",null,1);
+        db = aux.getWritableDatabase();
+
+        //insertar forma 1
+        sql = "UPDATE Personas SET nombre='"+this.getNombre()+"', apellido='"+this.getApellido()+"', sexo='"+this.getSexo()+"', " + "pasatiempo='" +this.getPasatiempo()+"' " + "where cedula ='"+this.getCedula()+"'";
+
+        db.execSQL(sql);
+
+        //cerrar conexion
+        db.close();
+
+    }
+
+
+
 }
